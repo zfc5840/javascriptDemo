@@ -1,0 +1,1608 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>JavaScript01</title>
+<script src="jquery-1.7.2.js" type="text/javascript"></script>
+<script src="jquery-1.7.2.min.js" type="text/javascript"></script>
+
+</head>
+<script type="text/javascript">
+/*
+ * 在DOM加载完成时运行的代码，可以这样写：加载完毕，意为页面加载完。
+  jQuery 代码:
+   $(document).ready(function(){
+   // 在这里写你的代码...
+   });
+   其中，简写为：
+   $(function($) {
+	   // 你可以在这里继续使用$作为别名...
+	 });
+ */
+ //测试JavaScript表单验证
+ function validate_required(field,alerttxt)
+ {
+ //有了 With 语句，在存取对象属性和方法时就不用重复指定参考对象，在 With 语句块中，凡是 JavaScript 不识别的属性和方法都和该语句块指定的对象有关
+ with (field)
+   {
+   if (value==null||value=="")
+     {alert(alerttxt);return false}
+   else {return true}
+   }
+ }
+
+ function validate_form(thisform)
+ {
+   with (thisform)
+   {
+   if (validate_required(email,"Email must be filled out!")==false)
+     {email.focus();return false}
+   }
+ }
+$(function(){
+	$("#demo01").click(
+		 function(){
+			var bl=false;
+			if('123'==123){
+				 bl=true;
+				}
+			 alert(bl);
+			}	   
+		);
+	//测试‘0123’==0123
+	//结果为:false,原因javascript将”0“开头的整数常量当八进制处理，所以后的0123实际是八进制数，而”0123“是按十进制转换成数值的。
+	$("#demo02").click(
+	  function(){
+		  var bl =false;
+		  if('0123'==0123){
+			  bl=true;
+		  }
+		  alert(bl);
+	  }		
+	);
+	//测试：’123‘===123
+	//结果为：false,原因：javaScript里的三个等号“===”表示全等，也就是数据值与数据类型都必须相等才是ture,undefined==null是true,但undefined===null就是false;
+	$("#demo03").click(
+    function(){
+    	var bl=false;
+    	if('123'===123){
+    		bl=true;
+    	}
+    	alert(bl);
+    }			
+	);
+	/*
+	与全相等相对的为不全等，即为“！==”,A!=B||typeof(A)!=typeof(B),即类型不等、值相等，类型相等、值不等，类型与值均不等。
+	全不等是类型和值均不等，即A!=B&&typeof(A)!=typeof(B)
+	*/
+	$("#demo04").click(
+	  function(){
+		  var life={};
+		  //{}为，以json方式定义对象，即{}表示为new Object()
+		  alert(life);
+		  for(life.age=1;life.age<=3;life.age++){
+			  switch(life.age){
+			  case 1:
+				  life.body="卵细胞";//增加body属性
+				  life.say=function(){
+					 alert(this.age+this.body);//新建say方法
+				  };
+				  break;
+			  case 2:
+				  life.tail="尾巴";//增加tail属性
+				  life.gill ="腮";//增加gill属性
+				  life.body="蝌蚪";
+				  life.say=function(){
+					  alert(this.age+this.body+"-"+this.tail+","+this.gill);
+				  };
+				  break;
+			  case 3:
+				  delete life.tail;//删除tail属性
+				  delete life.gill;//删除gill属性
+				  life.legs="四条腿";//增加legs属性
+				  life.lung="肺";//增加lung属性
+				  life.body="青蛙";
+				  life.say=function(){
+					  alert(this.age+this.body+"-"+this.legs+","+this.lung);
+				  };
+				  break;
+				 };
+				 life.say();//调用say方法，此方法逻辑每次都会动态改变
+		  }
+	  }		
+	);
+	//测试json数据类型
+	$("#demo05").click(
+	   function(){
+		   var json01={"firstname":"Brett"};
+		   alert(json01.firstname);
+		   var json02={ "firstName": "Brett", "lastName":"McLaughlin", "email": "aaaa" };
+		   alert(json02.lastName);
+		   var json03={"people":[{ "firstName": "Brett", "lastName":"McLaughlin", "email": "aaaa" },
+		                         { "firstName": "Jason", "lastName":"Hunter", "email": "bbbb"},    
+		                         { "firstName": "Elliotte", "lastName":"Harold", "email": "cccc" }    
+		                         ] }
+		   alert(json03.people[0].firstName);
+		   //修改json03的值
+		   json03.people[0].firstName="zhangfucheng";
+		   alert("修改后的值："+json03.people[0].firstName);
+		   //eval方法为javaScript方法，不需要引用任何文件，可以直接使用
+		   //作用为：将普通的字符串转换为json字符串
+		   var json04='{ "firstName": "zhangfucheng", "lastName":"McLaughlin", "email": "aaaa" }';
+		   var jsonss=eval('('+json04+')');
+		   alert("转换为json字符串后："+jsonss.firstName);
+		   //stringify方法为javascript方法
+		   //作用：将json字符串转换为普通字符串
+		   var text = JSON.stringify(jsonss); 
+		   alert(text);
+	   }		
+	);
+	$("#demo06").click(
+	   function(){
+		   var json02='{ "firstName": "Brett", "lastName":"McLaughlin", "email": "aaaa" }';
+		   var jsonss=eval('('+json02+')');
+		   alert("转换为json字符串后："+jsonss.firstName);
+		   var text = JSON.stringify(jsonss); 
+		   alert(text);
+	   }		
+	);
+	//测试函数也是对象
+	$("#demo07").click(
+	   function(){
+		   function sing(){
+			   alert(author+":"+sing.poem);
+		   }
+		   author="李白";
+		   sing.poem="此曲只应天上有";
+		   sing();
+		   
+	   }		
+	);
+	//测试for循环
+	$("#demo08").click(
+	  function(){
+		  var arr=[1,2,3,4,5,6];
+		  for(var s in arr){
+			  alert(arr[s]);
+		  }
+	  }		
+	);
+	//测试object对象是对象也是数组
+	$("#demo09").click(
+	  function(){
+		  var anObject={};
+		  anObject.aProperty="Property of object";
+		  anObject.aMethod=function(){
+			  alert("Method of object");
+		  }
+		  //主要看下面
+		  alert(anObject["aProperty"]);//可以把对象当成数组，以属性名为下标来访问属性
+		  anObject["aMethod"]();//可以把对象当成数组，以属性名为下标来调用方法
+		  //遍历对象的属性和方法，进行迭代处理
+		  for(var s in anObject){
+			  alert(s+" is a "+typeof(anObject[s]));
+		  }
+	  }		
+	);
+	//测试function既是对象又是数组
+	$("#demo10").click(
+	  function(){
+		  var aFunction = function(){};
+		  //为函数增加属性和方法
+		  aFunction.property="property of function";
+		  aFunction.method=function(){
+			  alert("method of function");
+		  }
+		 //对象方式获取属性值
+		 alert("对象方式获取属性值："+aFunction.property);
+	     //将函数看成数组，通过属性名作为下标来获取属性值
+	     alert("数组方式获取属性值："+aFunction["property"]);
+	     //将函数看成数组，通过属性名作为下标来调用方法
+	     aFunction["method"]();
+	     //遍历函数
+	     for(var s in aFunction){
+	    	 alert(s+" is a "+ typeof(aFunction[s]));
+	     }
+	  }	//结论：JavaScript中函数和对象既有对象的特性又有数组的特性
+	);
+	//测试this
+	//一般变成语言的this就是对象自己，而javaScript的this却并不一定！this可能是我，也可能是你，也可能是他，反正我中有你，你中有我。
+	$("#demo11").click(
+	  function(){
+		  function WhoAmI(){
+			  alert("I'm "+this.name+" of "+typeof(this));
+		  }
+		  WhoAmI();//此时this的根对象是window,其name属性为空字符串
+		  var BillGates = {name:"Bill Gates"};
+		  BillGates.method=WhoAmI;//将函数WhoAmI作为BillGates的方法
+		                          //this是BillGates
+		  BillGates.method();
+		  var SteveJobs ={name:"Steve Jobs"};
+		  SteveJobs.method=WhoAmI;//this是SteveJobs
+		  SteveJobs.method();
+		  //call方法详解：方法可以用来代替另一个对象调用一个方法。call 方法可将一个函数的对象上下文从初始的上下文改变为由 thisObj 指定的新对象。
+		  WhoAmI.call(BillGates);//直接将BillGates作为this，调用WhoAmI
+		  WhoAmI.call(SteveJobs);//直接将SteveJobs作为this，调用WhoAmI
+		  
+		  BillGates.method.call(SteveJobs);//将SteveJobs作为this，却调用了BillGates的WhoAmI方法
+		  SteveJobs.method.call(BillGates);
+		  
+		  WhoAmI.WhoAmI=WhoAmI;//将WhoAmI函数设置为自身的方法
+		  WhoAmI.name="WhoAmI";
+		  WhoAmI.WhoAmI();//此时的this是WhoAmI自身
+		  
+		  ({name:"nobody",WhoAmI:WhoAmI}).WhoAmI();//创建一个匿名对象并调用其方法
+	  }		
+	);
+	//测试new操作符创建对象
+	$("#demo12").click(
+	  function(){
+		  function myFunc(){};//定义一个空函数
+		  var anobject1=new myFunc();//使用new操作符，借助myFunc函数，创建了一个对象
+		  var anobject2=new myFunc;//函数也没有括号，但仍将调用该函数
+		  //等价于
+		  function myFunc(){};
+		  var anobject1={};
+		  myFunc.call(anobject1);
+	  }		
+	);
+	//测试函数当成构造函数
+	$("#demo13").click(
+	  function(){
+		  function person(name){//带参数的构造方法
+			  this.name=name;//定义并初始化name属性
+			  this.sayHello=function(){//定义对象方法
+				  alert("hi,I'm "+this.name);
+			  }
+		  }
+		  function Employee(name,salary){
+			  person.call(this,name);//调用父构造函数
+			  this.salary=salary;
+			  this.ShowMeTheMoney=function(){
+				  alert(this.name+" $"+this.salary);
+			  }
+		  }
+		  var BillGates = new person("BillGates");
+		  var SteveJobs = new Employee("SteveJobs",3000);
+		  BillGates.sayHello();
+		  SteveJobs.sayHello();
+		  SteveJobs.ShowMeTheMoney();
+		  //constructor用于获取当前对象的构造器
+		  alert(BillGates.constructor == person);
+		  alert(SteveJobs.constructor == Employee);
+		  alert(BillGates.sayHello == SteveJobs.sayHello);
+	  }		
+	);
+	//测试全局sayHello函数
+	$("#demo14").click(
+	  function(){
+		  function sayHello(){
+			  alert("hi,I'm "+this.name);
+		  }
+		  function person(name){
+			  this.name=name;
+			  this.sayHello=sayHello;
+		  }
+		  var BillGates = new person("BillGates");
+		  var SteveJobs = new person("SteveJobs");
+		  //两个对象共享一个函数对象
+		  BillGates.sayHello();
+		  SteveJobs.sayHello();
+		  alert(BillGates.sayHello == SteveJobs.sayHello);
+	  }		
+	);
+	//测试原型
+	$("#demo15").click(
+	  function(){
+		  function person(name){//定义构造函数
+			  this.name=name;
+		  }
+		  person.prototype.sayHello=function(){//为person的原型prototype添加sayHello函数
+			  alert("hi,I'm "+this.name);
+		  }
+		  var BillGates = new person("BillGates");
+		  var SteveJobs = new person("SteveJobs");
+		  BillGates.sayHello();
+		  SteveJobs.sayHello();
+		  alert(BillGates.sayHello == SteveJobs.sayHello);
+	  }		
+	);
+	//测试多层prototype原型 
+	$("#demo16").click(
+	  function (){
+		  function person(name){//基类构造函数
+			  this.name= name;
+		  }
+		  person.prototype.sayHello = function(){//给基类构造函数的prototype添加方法
+			  alert("hi,I'm "+this.name);
+		  }
+		  function employee(name,salary){//子类构造函数
+			  person.call(this,name);//调用基类构造函数
+			  this.salary=salary;
+		  }
+		  employee.prototype=new person();//建一个基类的对象作为子类原型的原型（原型继承）
+		  employee.prototype.showMeTheMoney=function(){//给子类构造函数的原型添加方法
+			  alert(this.name +" is $"+this.salary);
+		  };
+		  //增加原型属性
+          person.prototype.shuxing="nihao";		  
+		  var BillGates =new person("BillGates");//创建基类person的BigllGates对象
+		  var SteveJobs =new employee("SteveJobs",1234);//创建子类employee的SteveJobs对象
+		  BillGates.sayHello();//通过对象直接调用prototype的方法
+		  SteveJobs.sayHello();//通过子类对象直接调用基类prototype的方法
+		  SteveJobs.showMeTheMoney();//通过子类直接调用子类原型prototype的方法
+		  alert("BillGates基类原型属性值："+BillGates.shuxing);//通过基类调用基类的属性
+		  alert("SteveJobs子类原型属性值："+SteveJobs.shuxing);
+		  alert(BillGates.sayHello == SteveJobs.sayHello);
+	  }		
+	);
+	//测试子类之间关系
+	$("#demo17").click(
+	  function(){
+		  function person(name){
+			  this.name= name;
+		  }
+		  person.prototype.company="Mirosoft";//原型属性
+		  person.prototype.sayHello=function(){//原型方法
+			  alert("hi, I'm "+this.name+" of the "+this.company);
+		  };
+		  var BillGates = new person("BillGates");
+		  BillGates.sayHello();
+		  //SteveJobs是Morosoft公司的员工
+		  var SteveJobs=new person("SteveJobs");
+		  //SteveJobs离开Morosoft，进入Apple公司
+		  SteveJobs.company="Apple";//对象可以掩盖原型对象的那些属性和方法
+		  //SteveJobs打招呼时
+		  SteveJobs.sayHello();
+		  
+	  }		
+	);
+	//测试动态扩展的方法被先前建立的对象立即调用
+	$("#demo18").click(
+	  function(){
+		  function person(name){
+			  this.name=name;
+		  }
+		  person.prototype.sayHello=function(){
+			  alert("hi, I'm "+this.name);
+		  }
+		  var BillGates = new person("BillGates");
+		  BillGates.sayHello();
+		  //经过时间积累，人渐渐学会了write
+		  person.prototype.write=function(){
+			  alert("hi ,I'm "+this.name+",I can write!");
+		  }
+		  BillGates.write();
+	  }		
+	);
+	//运用面向对象的方法，编写病人看病的过程
+	$("#demo19").click(
+	  function(){
+		  //定义个医生原型，具体能做什么，具有什么能力待定
+		  function doctor(){
+		  }
+		  //定义基类共有属性，统称为医生
+		  doctor.prototype.name="doctor";
+		  //定义基类的能力，均会治病，会治什么病就不知道来了
+		  doctor.prototype.cure=function(){
+			  alert("hi, I'm "+this.name+", I can cure .");
+		  }
+		  //创建子类，BillGates拿到营业执照会看心脏病
+		  var BillGates = new doctor();
+		  BillGates.name="BillGates";
+		  BillGates.canCure="心脏病";
+		  BillGates.cure=function(){
+			  alert("hi, I'm "+this.name+", I can cure "+BillGates.canCure);
+			  return BillGates.canCure;
+		  }
+		  //定义基类patient，病人
+		 function patient(){
+			 
+		 }
+		  //定义基类的属性和方法
+		 patient.name="patient";
+		  //原型扩展了基类的方法
+		 patient.prototype.sayHello=function(){
+			 alert("hi ,I'm "+this.name+", I have "+this.bing);
+		 }
+		  //SteveJobs得了心脏病
+		var SteveJobs=new patient();
+		SteveJobs.name="SteveJobs";
+		SteveJobs.bing="心脏病";
+		SteveJobs.sayHello();
+		//基类扩展了方法，能够说出有什么病
+		patient.prototype.xunwen=function isCure(doctor){
+			this.doctor=doctor;
+			if(this.bing==this.doctor.cure()){
+				return true;
+			}else{
+				return false;
+			}
+		};
+		
+		
+		
+		//SteveJobs向医生BillGates看病
+	   if(SteveJobs.xunwen(BillGates)){
+		   alert("多谢你能够治疗心脏病");
+	   }else{
+		   alert("那我找会治疗心脏病的医生吧！");
+	   }
+		//jim得了高血压
+	   var jim=new patient();
+	   jim.name="Jim";
+	   jim.bing="高血压";
+	   jim.sayHello();
+	   //jim想BillGates询问
+	   if(jim.xunwen(BillGates)){
+		   alert("多谢你能够治疗高血压");
+	   }else{
+		   alert("我多么希望你能够会治疗高血压,那我找找其他医生吧");
+	   }
+	  }		
+	);
+	//定义私有变量和共有变量
+	$("#demo20").click(
+	   function (){
+		   function person(firstname,lastname,age){
+			   //定义私有变量 
+			   var _fristname=firstname;
+			   var _lastname =lastname;
+			   //定义共有变量
+			   this.age=age;
+			   this.getName=function(){
+				   return firstname+" "+lastname;
+			   }
+			   this.sayHello=function(){
+				   alert("hi,I'm "+firstname+" "+lastname);
+			   }
+		   }
+		   var BillGates = new person("Bill","Gates",45);
+		   BillGates.sayHello();
+		   alert(BillGates.getName()+", I'm "+BillGates.age);
+		   alert(BillGates._firstname);
+		   alert(BillGates.age);
+	   }		
+	);
+	//测试原型模型概念
+	//原型模型概念：需要一个构造函数来定义对象的成员，方法却依附于该构造函数的原型之上
+	$("#demo21").click(
+	  function(){
+		  function person(name){//定义构造函数
+			  this.name=name;//在构造函数上定义成员
+		  }
+		  //方法定义在构造函数原型之上
+		  person.prototype.sayHello=function(){
+			  alert("hi,I'm "+this.name);
+		  };
+		  //子类构造函数
+		  function employee(name,salary){
+			  person.call(this,name);
+			  this.salary=salary;
+		  }
+		  //子类构造函数首先需要上层构造函数对象来建立prototype对象，实现继承概念
+		  employee.prototype=new person();
+		  //子类的方法也要定义在构造函数之上
+		  employee.prototype.showMeTheMoney=function(){
+			  alert("hi，I'm "+this.name+" $"+this.salary);
+		  };
+		  var BillGates=new person("BillGates");
+		  BillGates.sayHello();
+		  var SteveJobs=new employee("SteveJobs",13234);
+		  SteveJobs.sayHello();
+		  SteveJobs.showMeTheMoney();
+		  
+	  }		
+	);
+	//原型中的一个方法当作构造函数，去初始化新建的对象
+	$("#demo22").click(
+	  function(){
+		  var person={//定义的类
+				create:function(name,age){
+					this.name=name;
+					this.age=age;
+				},  
+				sayHello:function(){
+					alert("hi，I'm "+ this.name);
+				},
+				howold:function(){
+					alert(this.name+" is "+this.age+" years old.");
+				}
+		  };
+		  function New(aClass,aParams){//创建通用创建函数
+			  function new_(){//定义临时的中转函数壳
+			      //应用某一对象的一个方法，用另一个对象替换当前对象。
+				  aClass.create.apply(this,aParams);//调用原型中定义的构造函数
+				  //中转构造逻辑和构造函数
+			  };
+			  new_.prototype=aClass;//准备中转原型对象
+			  return new new_();//返回最终建立的对象
+		  }
+		  //person.howold();
+		  //此为不使用通用函数
+		 /*  var tt=person;
+		  tt.create("tt",14);
+		  tt.sayHello(); */
+		  var BillGates = New(person,["BillGates",54]);//调用通用函数创建对象
+		  BillGates.sayHello();
+		  BillGates.howold();
+		  alert(BillGates.constructor == Object);
+	  }		
+	);
+	//测试更多的语法甘露
+	$("#demo23").click(
+	  function(){
+		  //语法甘露
+		  var object ={//定义小写的object类，用于实现最基本的方法
+				  isA:function(aType){//一个判断类与类之间以及对象与类之间关系的基础方法
+					  var self=this;//this代表当前类型，即调用isA（）方法的类型
+					  while(self){
+						  if(self == aType){
+							  return true;
+						  }else{
+							  self=self.Type;
+						  }
+					  }
+					  return false;
+				  }
+		  };
+		
+		 function Class(aBaseClass,aClassDefine){//创建类的构造函数，用于声明类及继承关系
+			 function class_(){//创建类的临时函数壳
+			 this.Type=aBaseClass;//为每一个类约定一个类型，引用其继承的类
+			 for(var member in aClassDefine){
+				 this[member]=aClassDefine[member];//复制类的全部定义到当前创建的类
+			 };
+		    }
+			 class_.prototype=aBaseClass;
+			 return new class_();
+		 }
+		 
+		 function New(aClass,aParams){//创建对象创建函数，用于任意类的对象创建
+			 function new_(){//创建对象的临时函数壳
+				 this.Type=aClass;//为每一个对象约定一个函数type属性，据此可以访问到对象所属的类
+				 if(aClass.create){
+					 aClass.create.apply(this,aParams);//约定所有类的构造函数均为create
+				 }
+			 }
+			 new_.prototype=aClass;
+			 return new new_();
+		 }
+		 //语法甘露的应用效果
+		 var person = Class(object,{//派生自object基础类
+			 create:function(name,age){
+				 this.name=name;
+				 this.age=age;
+			 },
+			 sayHello:function(){
+				 alert("hi,I'm "+this.name+" "+this.age+" years old. ");
+			 }
+		 });
+		  
+		 var employee = Class(person,{
+               create:function(name,age,salary){
+            	   person.create.call(this,name,age);
+            	   this.salary=salary;
+               },
+               showMeTheMoney:function(){
+            	   alert("hi ,I'm "+this.name+" $"+this.salary);
+               }
+		 });
+		 
+		 var BillGates = New(person,["BillGates",43]);
+		 var SteveJobs = New(employee,["SteveJobs",56,5600]);
+		 BillGates.sayHello();
+		 SteveJobs.sayHello();
+		 SteveJobs.showMeTheMoney();
+		 
+		 var LittleBill = New(BillGates.Type,["littleBill",13]);//用BillGates类型创建littleBill
+		 LittleBill.sayHello();
+		 
+		 alert(BillGates.isA(person));
+		 alert(BillGates.isA(employee));
+		 alert(SteveJobs.isA(person));
+		 alert(person.isA(employee));
+		 alert(employee.isA(person));
+	  }		
+	);
+	//测试new的语法
+	$("#demo24").click(
+	   function(){
+		   function person(name,age){
+			   this.name=name;
+			   this.age=age;
+			   
+		   }
+		   person.prototype.sayHello=function(){
+			   alert("hi,I'm "+this.name+" "+this.age+" years old.");
+		   }
+		   var BillGates = new person("BillGates",54);
+		   BillGates.sayHello();
+	   }		
+	);
+	//完美的甘露模型代码
+	$("#demo25").click(
+	   function(){
+		   //定义类的语法甘露：Class()
+		   //最后一个参数是json表示的类定义
+		   //如果参数数量大于1个，则第一个参数是基类
+		   //第一个和最后一个之间的参数，将来可表示类实现的接口
+		   //返回值是类，类是一个构造函数
+		   function Class(){
+			   var aDefine = arguments[arguments.length-1];//最后一个参数是类定义
+			   //作用：防止接下来使用aDefine对象时出现未定义现象
+			   if(!aDefine){//若aDefine为空
+				   alert("aDefine");
+				   return ;//这个怎么没有返回值
+			   }
+			   var aBase =arguments.length>1?arguments[0]:object;//解析基类
+			   function prototype_(){};//构造prototype的临时函数，用于挂接原型链
+			   prototype_.prototype=aBase.prototype;//准备传递prototype
+			   alert("aBase.prototype="+aBase.prototype);
+			   var aPrototype = new prototype_();//建立类要用的prototype
+			   
+			   for(var member in aDefine){
+				   if(member != "Create"){//构造函数不用复制
+					   aPrototype[member]=aDefine[member];
+				   }
+			   }
+			   //根据是否继承特殊属性和性能情况，可分别注释掉下列的语句
+			   if(aDefine.toString != Object.prototype.toString){
+				   aPrototype.toString= aDefine.toString;
+			   }
+			   if(aDefine.toLocaleString !=Object.prototype.toLocaleString){
+				   aPrototype.toLocaleString=aDefine.toLocaleString;
+			   }
+			   
+			   if(aDefine.Create){//若有构造函数
+				   var aType = aDefine.Create;//类型即为该构造函数
+			   }else{//否则为默认构造函数
+				   aType=function(){
+				   this.base.apply(this,arguments);//调用基类构造函数
+			   };
+			   }
+			   aType.prototype = aPrototype;//设置类（构造函数）的prototype
+			   aType.Base =aBase;//设置类型关系，便于追溯继承关系
+			   aType.prototype.Type = aType;//为本类对象扩展一个Type属性
+			   return aType;//返回构造函数作为类
+		   };
+		   //根类object定义
+		   function object(){};//定义小写的object根类，用于实现最基础的方法等
+		   object.prototype.isA=function(aType){//判断对象是否属于某类型
+			   var self=this.Type;
+		     while(self){
+		    	 if(self == aType){
+		    		 return true;
+		    	 }else{
+		    		 self=self.Base;
+		    	 }
+		     }
+		     return false;
+		   };
+		   
+		   object.prototype.base = function(){//调用基类构造函数
+			   var Base = this.Type.Base;//获取当前对象的基类
+			   if(!Base.Base){
+				   Base.apply(this,arguments);//则直接调用基类构造函数
+			   }else{//若基类还有基类
+				   this.base=MakeBase(Base);//先覆盖this.base
+				   Base.apply(this,arguments);//在调用基类构造函数
+				   delete this.base;//删除覆写的base属性
+			   }
+		   };
+		   function MakeBase(Type){//包装基类构造函数
+			   var Base = Type.Base;
+		   if(!Base.Base){//基类已无基类，就无需包装
+			   return Base;
+		   }
+		   return function(){//包装为引用临时变量Base的闭包函数
+			   this.base=MakeBase(Base);//先覆写this.base
+			   Base.apply(this,arguments);//再调用基类构造函数
+		   };
+		   }
+		   //语法甘露的效果
+		   var Person = Class({//默认派生自object基本类
+			   Create:function(name,age){
+				   this.base();//调用上层构造函数
+				   this.name= name;
+				   this.age= age;
+			   },
+			   SayHello:function(){
+				   alert("Hello,I'm "+this.name+" ,"+this.age+" years old.");
+			   },
+			   toString:function(){//覆写toString方法
+				   return this.name;
+			   }
+		   });
+		   
+         var Employee = Class(Person,{//派生自Person类
+        	 Create:function(name,age,salary){
+        		 this.base(name,age);//调用基类的构造函数
+        		 this.salary=salary;
+        	 },
+        	 ShowMeTheMoney:function(){
+        		 alert(this+" $"+this.salary);//这里直接引用this将隐式调用toString()
+        	 }
+         });
+         //测试传递的参数为空
+         Class();
+         var BillGates = new Person("BillGates",53);
+         var SteveJobs = new Employee("SteveJobs",51,3465);
+         alert(BillGates);//隐式调用覆盖后的toString()方法
+         BillGates.SayHello();
+         SteveJobs.SayHello();
+         SteveJobs.ShowMeTheMoney();
+         
+         var LittleBill = new BillGates.Type("LittleBill",6);//用BillGates的类型建ListtleBill
+         LittleBill.SayHello();
+         
+         alert(BillGates.isA(Person));
+         alert(BillGates.isA(Employee));
+         alert(SteveJobs.isA(Person));
+	   }		
+	);
+	//测试arguments参数传递方式
+	$("#demo26").click(
+	   function(){
+		    function canshu(){//这里没有定义传递的参数类型和个数
+		    	alert("传递参数的个数："+arguments.length);
+		    	for(var me in arguments){//arguments为canshu方法内所传递参数的集合
+		    		alert(arguments[me]);//循环输出所传递的参数
+		    	}
+		    };
+		    //调用此参数
+		    canshu("nihao",45,87);
+	   }		
+	);
+	//测试window对象
+	$("#demo27").click(
+	   function(){
+		   //1、打开一个网页时，浏览器会首先创建一个窗口，这个窗口就是window对象
+		   //2、windwo对象是JavaScript运行所依附的全局环境对象和全局作用域对象
+		   alert("window对象是JavaScript运行所依附的全局环境变量和全局作用域对象");
+		   
+	   }		
+	);
+	//测试document对象
+	$("#demo28").click(
+	  function(){
+		  //1、为了加载网页文档，当前窗口将为要打开的网页创建一个document对象，然后将网页加载到这个document中。
+		  //2、网页的内容就是在这个过程中,一边加载一边呈现出来的。
+		  //3、js的引入有顺序之分，这样加载和执行的目的是为了建立文档对象的模型（Dom）的主框架
+		  alert("document有window创建，并把网页内容放到document中");
+	  }		
+	);
+	//测试&与&&区别
+	$("#demo29").click(
+	  function(){
+		  var b2=true;
+		  var b1=false;
+		  if(b1&b2){//总结：一假必假，都真为真
+			  alert("zhen");
+		  }else{
+			  alert("jia");
+		  }
+	  }		
+	);
+	//测试typeof，typeof用于返回表达式的数据类型
+	//ECMAscript中基本数据类型：undefined,null,String,number,boolean，一种复杂数据类型object，object默认是无序的名值对
+	$("#demo30").click(
+	  function(){
+		  var message="nihao";
+		  var age=10;
+		  alert("message的数据类型："+typeof(message));
+		  alert("age的数据类型："+typeof(age));
+	  }		
+	);
+	//测试null,null是一种空对象的指针
+	$("#demo31").click(
+	  function(){
+		  var age=14;
+		  var message=null;
+		  if(age != null){
+			  alert("不为空");
+		  }else{
+			  alert("为空");
+		  }
+		  alert("null的数据类型:"+typeof(message));
+	  }		
+	);
+	//测试null和undefined,undefined派生自null,因此 ECMA-262 规定对它们相等性测试要返回 true,但是谷歌浏览器中却返回false
+	$("#demo32").click(
+	   function(){
+		   var message;
+		   var age=null;
+		   alert("null == undefined :"+typeof(message) == typeof(age));
+	   }		
+	);
+	//测试Boolean与各类型数据间转换,虽然 Boolean 类型的字面值只有两个，但 ECMAScript 中所有类型的值都有与这两个 Boolean 值等价的值。要将一个值转换为其对应的 Boolean 值，可以调用转型函数 Boolean()
+	//调用规则：任何非空字符串、任何非零数字值、任何非空对象均为true
+	$("#demo33").click(
+	   function(){
+		   var message="hello world";
+		   alert("显示调用Boolean（）："+Boolean(message));
+		    if(message){
+		    	alert("隐式转换调用Boolean（），尤其在流程判断中用途极大");
+		    }
+	   }		
+	);
+	//测试number类型自动转换十进制
+	$("#demo34").click(
+	   function(){
+		   var octalNum1 = 070;//八进制56
+		   alert("自动转换十进制："+octalNum1);
+	   }		
+	);
+	//测试NaN类型，即Not a Number,数值用于表示一个本来要返回数值的操作数未返回数值的情况(这样就不会抛出错误了)
+	$("#demo35").click(
+	   function(){
+		   alert(NaN==NaN);
+		   alert("isNaN(NaN):"+isNaN(NaN));
+		   alert("isNaN(10):"+isNaN(10));
+		   alert("isNaN(blue):"+isNaN("bule"));//"blue"不能转换为数值
+		   alert("isNaN(true):"+isNaN(true));//true能够转换为数值型
+	   }		
+	);
+	//测试String类型,String类型用来表示由零或多个unicode字符组成的字符序列，可以用双引号也可以用单引号表示
+	$("#demo36").click(
+	   function(){
+		   
+	   }		
+	);
+	//测试toString()方法
+	$("#demo37").click(
+	   function(){
+		   var age =100;
+		   alert("数据类型均有toString（）方法："+age.toString());
+		   alert("toString(8),传参数转换为对应的进制表示："+age.toString(8));
+	   }		
+	);
+	//测试逻辑非,逻辑非操作符由一个叹号 (!) 表示,无论什么数据类型，都返回一个布尔值
+	/*
+	规则如下：如果操作数是一个对象，返回 false;
+	                  如果操作数是一个空字符串，返回 true;
+	                  如果操作数是一个非空字符串，返回 false;
+	                  如果操作数是数值 0，返回 true;
+	                  如果操作数是任意非0数值 (包括 Infinity) ，返回 false;
+	                  如果操作数是 null，返回 true;
+	                  如果操作数是 NaN，返回 true;
+	                 如果操作数是 undefined，返回 true。
+	*/
+	$("#demo38").click(
+	  function(){
+		  var people=new Object();
+		  if(!people){
+			  alert("不是对象");
+		  }else{
+			  alert("是对象");
+		  }
+	  }		
+	);
+   //测试逻辑与,逻辑与操作符由两个和号 ( && ) 表示，有两个操作数。
+   /*
+   逻辑与操作可以应用于任何类型的操作数，而不仅仅是布尔值。在有一个操作数不是布尔值的情况下，逻辑与操作就不一定返回布尔值；此时，它遵循下列规则：
+                        如果第一个操作数是对象，则返回第二个操作数；
+                        如果第二个操作数是对象，则只有在第一个操作数的求值结果为 true 的情况下才会返回该对象；
+                        如果两个操作数都是对象，则返回第二个操作数；
+                        如果有一个操作数是 null，则返回 null；
+                        如果有一个操作数是 NaN ，则返回 NaN；
+                        如果有一个操作数是 undefined ，则返回 undefined 。
+                        在使用逻辑与操作符时要始终铭记它是一个短路操作符。
+   */
+   $("#demo39").click(
+	  function(){
+		  var people = new Object();
+		  people.name="zhangsan";
+		  people.age=19;
+		  var message="hello world";
+		  var result01=people&&message;
+		  var result02=""&&people;
+		  var student = new Object();
+		  student.name="wangwu";
+		  student.age=56;
+		  var result03=people&&student;
+		  var result04=null&&people;
+		  var result05=NaN&&people;
+		  var result06=undefined&&people;
+		  var result07=true&&message;
+		  var result08=false&&message;
+		  alert("如果第一个操作数是对象，返回第二个操作数："+result01);
+		  alert("若第二个操作数是对象，则只有在第一个操作数的求值结果为true的情况下才会返回该对象,否则返回第一个操作数："+result02);
+		  alert("若两个操作数都是对象，则返回第二操作数:"+result03.name);
+		  alert("若有一个操作数是null,则返回null:"+result04);
+		  alert("若有一个操作数是NaN，则返回NaN:"+result05);
+		  alert("若有一个操作数是undefined，则返回undefined："+result06);
+		  alert("若第一个操作数为true，则返回第二个操作数："+result07);
+		  alert("第一个操作数不为true，则返回第一个操作数："+result08);
+	  }	   
+   );
+   //测试逻辑或,逻辑或操作符由两个竖线符合 ( || ) 表示，有两个操作数。
+   /*
+      与逻辑与操作相似，如果有一个操作数不是布尔值，逻辑或也不一定返回布尔值；此时，它遵循下列规则：
+      如果第一个操作数是对象，则返回第一个操作数；
+      如果第一个操作数的求值结果为 false ，则返回第二个操作数；
+      如果两个操作数都是对象，则返回第一个操作数；
+      如果两个操作数都是 null，则返回 null；
+      如果两个操作数都是 NaN，则返回 NaN;
+      如果两个操作数都是 undefined，则返回 undefined。
+      与逻辑与操作符相似，逻辑或操作符也是短路操作符。也就是说，如果第一个操作数的求值结果为 true，就不会对第二个操作数求值了
+   */
+   $("#demo40").click(
+	  function(){
+		  var people = new Object();
+		  var message= "hello world";
+		  var result01=people||message;
+		  var result02=0||message;
+		  people.name="people";
+		  var student = new Object();
+		  student.name="student";
+		  var result03=people||student;
+		  alert("如果第一个操作数是对象，则返回第一个操作数："+result01);
+		  alert("如果第一个求值结果为false,则返回第二个操作数"+result02);
+		  alert("如果两个都是对象，则返回第一个操作数："+result03.name);
+	  }	   
+   );
+  //测试加法操作符
+  /*
+  加法操作符 ( + ) 的用法如下所示:
+	  如果两个操作数都是数值，执行常规的加法计算。
+	  不过，如果有一个操作数是字符串，那么就要应用如下规则：
+	  如果两个操作数都是字符串，则将第二个操作数与第一个操作数拼接起来；
+	  如果只有一个操作数是字符串，则将另一个操作数转换为字符串，然后再将两个字符串拼接起来。
+	  如果有一个操作数是对象、数值或布尔值，则调用它们的 toString() 方法取得相应的字符串值，然后再应用前面关于字符串的规则。
+	  对于 undefined 和 null ，则分别调用 String() 函数并取得字符串 "undefined" 和 "null"
+  */
+  $("#demo41").click(
+	 function(){
+		 var age1 =15;
+		 var age2 =56;
+		 var result01=age1+age2;
+		 var message01="hello ";
+		 var message02="world ";
+		 var result02=message01+message02;
+		 var result03=message01+age1;
+		 alert("两个操作数都是数值，执行常规加法:"+result01);
+		 alert("两个操作数都是字符串，则拼接起来："+result02);
+		 alert("一个是字符串，一个是数值，则把数值转化为字符串拼接起来："+result03);
+	 }	  
+  );
+  //测试关系操作符,小于 (<) 、大于 (>) 、小于等于 (<=) 和大于等于 (>=) 这几个关系操作符用于对两个值进行比较，比较的规则与我们在数学课上所学的一样。这几个操作数都返回一个布尔值
+  /*
+  相应的规则：
+  如果两个操作数都是数值，则执行数值比较；
+  如果两个操作数都是字符串，则比较两个字符串对应的字符编码值；
+  如果一个操作数是数值，则将另一个操作数转换为一个数值，然后执行数值比较；
+  如果一个操作数是对象，则调用这个对象的 valueOf() 方法，用得到的结果按照前面的规则执行比较。如果对象没有 valueOf() 方法，则调用 toString() 方法，并用得到的结果根据前面的规则执行比较；
+  如果一个操作数是布尔值，则先将其转换为数值，然后再执行比较。
+  */
+  $("#demo42").click(
+	  function(){
+		  var result="Black" < "nihao";
+		  alert("大写字母的字符编码全部小于小写字母的字符编码:"+result);
+	  }	  
+  );
+  //测试break和continue语句
+  /*
+  break 和 continue 语句用于在循环中精确地控制代码的执行。其中，break 语句会立即退出循环，强制继续执行循环后面的语句.
+    而continue虽然也是立即退出当前循环，但是退出循环后会继续从循环的顶部继续执行。
+  */
+  $("#demo43").click(
+	 function(){
+		for(var i=0;i<10;i++){
+			if(i==5){
+				break;
+			}
+			alert(i);
+		} 
+		
+		for(var m=0;m<10;m++){
+			if(m==5){
+				continue;
+			}
+			alert(m);
+		}
+	 }	  
+  );
+  //测试函数的return,函数会在执行完 return 语句之后停止并立即退出
+  $("#demo44").click(
+	 function(){
+		 function t(){
+			 alert("函数会在执行完 return 语句之后停止并立即退出")
+			 return 10;
+			 alert("nihao");//永不执行
+		 }
+		 t();
+		 
+		function t2(){
+			//在这种情况下，函数在停止执行后将返回 undefined 值。这种用法一般用在需要提前停止函数执行而又不需要返回值的情况下
+			alert("return 语句也可以不带有任何返回值,");
+			return ;
+		}
+		t2();
+	 }	  
+  );
+  //测试理解参数
+  /*
+  ECMAScript 函数的参数与大多数其他语言中函数的参数有所不同。
+  ECMAScript 函数不介意传递进来多少个参数，也不在乎传进来参数是什么数据类型。也就是说，即便你定义的函数只接收两个参数，
+     在调用这个函数时也未必一定要传递两个参数。可以传一个、三个甚至不传递参数，而解析器永远不会有什么怨言。
+     原因是 ECMAScript 中的参数在内部是用一个数组来表示的。函数接收到的始终都是这个数组，而不关心数组中包含哪些参数 (如果有参数的话)。
+     如果这个数组中不包含任何元素，无所谓；如果包含多个元素，也没有问题。
+  */
+  $("#demo45").click(
+	 function(){
+		 function sayHi () {
+			 alert("Hello " + arguments[0] + "," + arguments[1]);
+			 } 
+			 sayHi("Nicholas", "how are you today?");
+	 }	  
+  );
+  //测试值传递与引用传递
+  /*
+  ECMAScript 中所有函数的参数都是按值传递的。也就是说，把函数外部的值复制给函数内部的参数，
+     就和把值从一个变量复制到另一个变量一样。基本类型值的传递如同基本类型变量的复制一样，而引用类型值的传递，则如同引用类型变量的复制一样。
+     有不少开发人员在这一点上可能会感到困惑，因为访问变量有按值和按引用两种方式，而参数只能按值传递。
+  */
+  $("#demo46").click(
+	 function(){
+		 function addTen (num) {
+			 num += 10;
+			 return num;
+			 }
+			 var count = 20;
+			 var result = addTen(count);
+			 alert(count);        // 20, 没有变化,ecmz基本数据类型作为参数时，参数num实际上是函数的局部变量
+			 alert(result);        // 30 
+			 
+			 function setName (obj) {
+				 obj.name = "Nicholas";//可以认为：对象的传递是全局变量
+				 }
+				 var person = new Object();
+				 setName(person);
+				 alert(person.name);  // "Nicholas"
+			// 对象person被传递到 setName() 函数中之后就被复制给了 obj 。在这个函数内部， obj 和 person 引用的是同一个对象
+			//换句话说，即使这个对象是按值传递的，obj 也会按引用来访问同一个对象。于是，当在函数内部为 obj 添加 name 属性后，函数外部的 person 也将有所反映；因为 person 指向的对象在堆内存中只有一个，而且是全局对象
+			function setName(obj) {
+              obj.name = "Nicholas";
+              obj = new Object();//这说明即使在函数内部修改了参数的值，但原始的引用仍然保持未变。实际上，当在函数内部重写 obj 时，这个变量引用的就是一个局部对象了。而这个局部对象会在函数执行完毕后立即被销毁
+              obj.name = "Greg";
+            }
+           var person = new Object();
+           setName(person);
+           alert(person.name); // "Nicholas"
+	 }	  
+  );
+  //测试instanceof
+  /*
+        根据规定，所有引用类型的值都是 Object 的实例。因此，在检测一个引用类型值和 Object 构造函数时， instanceof 操作符始终会返回 true 。
+        当然，如果使用 instanceof 操作符检测基本类型的值，则该操作符始终会返回 false ，因为基本类型不是对象。
+  */
+  $("#demo47").click(
+	 function(){
+		 //person instanceof Object
+		 alert("所有引用类型的值都是Object，故，检测一个引用类型值和object构造函数时，instanceof都会返回true");
+	 }	  
+  );
+  //测试没有块级作用域
+  /*
+       这里是在一个 if 语句中定义了变量 color 。如果是在 C 、C++ 或  Java 中， color 会在 if 语句执行完毕后被销毁。
+       但在 JavaScript 中，if 语句中的变量声明会将变量添加到当前的执行环境 (在这里是全局环境) 中。
+  */
+  $("#demo48").click(
+	 function(){
+		 var message ="nihao";
+		 if(message){
+			 var color="blue";
+		 }
+		 alert("if语句没有块级作用域,自动将语句内的变量设置到当前执行环境，即全局变量："+color);
+		 for(var i=0;i<10;i++){
+			 alert("循环中i:"+i);
+		 }
+		 alert("for语句也是没有块级作用域，循环结束后的i:"+i);
+	 }	  
+  );
+  //测试声明变量
+  $("#demo49").click(
+	 function(){
+		 function add(num1, num2){  
+			 //sum没有加var,即为全局变量
+			   sum = num1 + num2;  
+			    return sum;  
+			}  
+			var result = add(10, 20);// 30  
+			alert("声明变量没有加var,即为全局变量："+sum); // 30  
+	 }	  
+  );
+  //测试JavaScript清理内存
+  $("#demo50").click(
+	 function(){
+		 //此种清理方式只适合IE中
+		 //window.CollectGarbage();
+		 alert("已清理内存");
+	 }	  
+  );
+  //测试手动解除释放内存
+  /*
+        优化内存占用的最佳方式，就是为执行中的代码只保存必要的数据。一旦数据不再有用，最好通过将其值设置为 null来释放其引用 -- 这个做法叫做解除引用 (dereferencing)。
+        这一做法适用于大多数全局变量和全局对象的属性。局部变量会在它们离开执行环境时自动被解除引用
+  */
+  $("#demo51").click(
+	 function(){
+		 function createPerson (name) {  
+			    var localPerson = new Object();  
+			    localPerson.name = name;  
+			    return localPerson;  
+			}  
+			var globalPerson = createPerson("Nicholas");  
+			alert("通过设置变量为null，实现解除引用：");
+			// 手工解除 globalPerson 的引用  
+			globalPerson = null;  
+	 }	  
+  );
+  //测试数组转换方法
+  $("#demo52").click(
+	 function(){
+		 var colors=["blue","red","yellow"];
+		 alert("调用数组toString():"+colors.toString());
+		 alert("调用数组valueOf():"+colors.valueOf());
+		 alert("直接使用数组:"+colors);
+	 }	  
+  );
+  //测试数组的栈方法
+  /*
+    栈方法的规则：
+    push() 方法可以接收任意数量的参数，把它们逐个添加到数组末尾，并返回修改后数组的长度。
+           而 pop() 方法则从数组末尾移除最后一项，减少数组的 length 值，然后返回移除的项。
+  */
+  $("#demo53").click(
+	function(){
+		var colors = ["yellow"];
+		var count = colors.push("red","green");
+		alert("入栈，返回数组的长度："+count);
+		count = colors.push("black");
+		alert("入栈，返回数组的长度："+count);
+		var item = colors.pop();//取得最后一项，并删除
+		alert("取得最后一项，并删除，返回最后一项内容："+item);
+		alert("调用pop()方法后的长度："+colors.length);
+		
+	}	  
+  );
+  //测试数组的队列方法
+  /*
+        栈数据的访问原则是后进先出，而队列数据结构的访问规则是 FIFO (first-in-first-out，先进先出)，队列在列表的末端添加项，从列表的前端移除项。
+        由于 push() 是向数组末端加项的方法，因此要模拟队列只需一个从数组前端取得项的方法。实现这一操作的数组方法就是 shift() ，它能够移除数组中的第一个项并返回该项，同时将数组长度减 1 。结合使用 shift() 和 push() 方法，可以像使用队列一样使用数组。
+  */
+  $("#demo54").click(
+	function(){
+		var colors = new Array(); // 创建一个数组
+		var count = colors.push("red", "green");// 推入两项
+		alert(count);  // 2
+		count = colors.push("black"); // 推入另一项
+		alert(count);  // 3
+		var item = colors.shift(); // 取得第一项
+		alert("调用数组的shift(),取得第一项:"+item); // "red" 
+		alert(colors.length); // 2
+	}	  
+  );
+  //测试数组的unshift()和shift()方法
+  /*
+   unshift() 与 shift() 的用途相反：它能在数组前端添加任意个项并返回新数组的长度。
+        因此，同时使用 unshift() 和 pop() 方法，可以从相反的方向来模拟队列，即在数组的前端添加项，从数组末端移除项
+  */
+  $("#demo55").click(
+	  function(){
+		var colors = new Array();
+		var count =colors.unshift("red","green");
+		alert("调用unshift()方法，在数组的前端添加任意个项,并返回数组长度:"+count);
+		colors.unshift("black");
+		var item = colors.pop();//取得最后一项
+		alert("调用pop()取得最后一项："+item);
+		var item2= colors.shift();//取得第一项
+		alert("调用shift()方法后，返回第一项："+item2);
+	  }	  
+  );
+  //测试jQuery的data()方法
+  /*
+             在元素上存放数据,返回jQuery对象。
+  */
+  $("#demo56").click(
+	 function(){
+		 $("#demo56").data("data","hello");
+		 alert($("#demo56").data("data"));
+	 }	  
+  );
+  //测试document的write()方法
+  $("demo57").click(
+	 function(){//暂时看不到结果
+		 document.write("Hello World!");
+	 }	  
+  );
+  //测试JavaScript的prompt
+  $("#demo59").click(
+      function(){
+    	  var username =prompt("姓名",'ddd');
+    	  if(username){
+    		  alert(username);
+    	  }
+      }		  
+  );
+  //测试jQuery(selector,[context])
+  /*
+  这个函数接收一个包含 CSS 选择器的字符串，然后用这个字符串去匹配一组元素。
+  默认情况下, 如果没有指定context参数，$()将在当前的 HTML document中查找 DOM 元素；如果指定了 context 参数，如一个 DOM 元素集或 jQuery 对象，那就会在这个 context 中查找。
+  例：在文档的第一个表单中，查找所有的单选按钮(即: type 值为 radio 的 input 元素)。
+ jQuery 代码:
+       $("input:radio", document.forms[0]);
+  */
+  $("#demo60").click(
+	function(){
+		
+	}	  
+  );
+ //测试JavaScript的setTimeOut()
+ $("#demo61").click(
+   function(){
+	   var t=setTimeout("alert('5 seconds!')",5000);
+   
+   }		 
+ );
+//测试Text的select()
+$("#demo62").click(
+    function(){
+    	document.getElementById("myText").select();
+    }
+		);
+//测试focus()方法
+$("#demo63").click(
+	function(){
+		document.getElementById("myText").focus();
+	}
+		);
+//测试函数声明
+$("#demo64").click(
+	function(){
+		fn();  //output  2
+		//函数声明
+		var fn= function(){
+		   alert("1");
+		}
+		fn();  //output  1
+		//函数定义
+		function fn(){
+		    alert("2");
+		}
+		fn();  //output  1
+	}
+		);
+  //测试关于局部变量和全局变量的访问
+  /*
+  这里在fn方法中依次输出了四个变量，不知道结果和你预期的有没有差异，输出的第一个参数num1在局部和全局环境中都有声明，局部变量优先级高于全局变量无可厚非，这里不一样的是在声明变量之前访问了num1，
+  说明在预处理阶段构造执行环境时已经为局部变量分配了存储空间，赋的初始值是undefined罢了，输出的第二个变量num3在arguments和局部变量中都有，
+  输出的是arguments中的参数变量，如果前面一个结论成立，那么说明arguments中的变量覆盖了局部环境中的变量，也就是说通过变量定义的方式优先级高于arguments对象数组中定义的变量。
+  第三个输出num4时会报错误，说明连续赋值操作中除第一个变量以外的变量被视为全局变量处理，而全局环境中没有相关定义所以会出错，
+  第四个num2输出出错也是由于被视为全局变量的原因，这两个地方的错误应该可以引用这样一句话：“个人自扫门前雪，莫管他人瓦上霜”，
+  也就是说预处理阶段一个独立的执行环境只会维护自己内部的变量，忽略其他环境的变量。
+  */
+  $("#demo65").click(
+	 function(){
+		 var num1 = 1;
+		 function fn(num3){
+		     alert(num1);    //output    undefined
+		     alert(num3);    //output  4
+		     //alert(num4);    //throw error  “num4 is not defined”
+		     //console.log(num2);    //throw error  “num2 is not defined”
+		    var num1 = num4 = 2;
+		    // num2 = 3;
+		    // var num3= 5;
+		 }
+		 fn(4);
+	 }	  
+  );
+  //测试函数的调用
+  /*
+  这个demo主要目的是比较arguments、函数定义和函数声明三种方式的一个优先级，从结果知道输出的是通过函数声明的方式定义的函数，从上一个实例得出的结论是arguments中变量会覆盖var方式定义的变量，
+  这里arguments中的变量又被函数定义的方法覆盖了，那我们可以得到这样一个结论：将函数声明为变量(var t = function(){})的方式优先级最高，在预处理阶段被初始化，执行时会先被arguments中的变量覆盖，
+  最后被通过函数定义(function t(){})创建的变量覆盖，这一过程完毕后程序才开始执行
+  */
+  $("#demo66").click(
+	 function(){
+		 function   fn(t){
+			    t();
+			    function t(){
+			        alert("2");
+			    }
+			    t();//output  2
+			    var t = function(){
+			       alert("3");
+			    }
+			    t();//output  3
+			    
+			}
+			fn(function(){alert("1")});  //output  2
+	 }	  
+  );
+  //测试JavaScript定义常量
+  $("#demo67").click(
+	 function(){
+		 //常量不可以改变
+		 const age=15;
+		 alert("常量改变前："+age);
+		 age = 15+1;
+		 alert("常量改变后："+age);
+	 }	  
+  );
+  //测试JavaScript的Navigator 对象
+  $("#demo68").click(
+	 function(){
+		//var plugins=navigator.plugins[];
+		alert("appMinorVersion="+navigator.appMinorVersion);
+	 }	  
+  );
+  //测试jQuery([selecctor,[context]])
+  /*
+  这个函数接收一个包含 CSS 选择器的字符串，然后用这个字符串去匹配一组元素。
+  */
+  $("#demo69").click(
+	 function(){
+		 //在文档的第一个表单中，查找所有的单选按钮(即: type 值为 radio 的 input 元素)。
+		 $("input:radio", document.forms[0]);
+		 $("input:button").get(2).focus();
+	 }	  
+  );
+  $("#start").click(function () {
+      $("div").show("slow");
+      $("div").animate({left:'+=200'},5000);
+      $("div").queue(function () {
+          $(this).addClass("newcolor");
+          $(this).dequeue();
+      });
+      $("div").animate({left:'-=200'},1500);
+      $("div").queue(function () {
+          $(this).removeClass("newcolor");
+          $(this).dequeue();
+      });
+      $("div").slideUp();
+      $("#start").click();
+  });
+  $("#stop").click(function () {
+      $("div").queue("fx", []);
+      $("div").stop();
+  });
+  //测试jQuery的prop方法
+  $("#demo70").click(
+	 function(){
+		 $("input[type='checkbox']").prop({disabled: true});
+		 $("input[type='checkbox']").prop("checked", true);
+		alert($("input[type='checkbox']").prop("checked"));
+		 $("input[type='checkbox']").removeProp("disabled");
+	 }	  
+  );
+  //测试jQuery的trigger方法
+  $("#demo71").click(function(event,a,b){
+	 alert("a="+a);
+	 alert("b="+b);
+  }).trigger("click",["nihao","world"]);
+  //focusin获取焦点时触动动画
+  $("p.d").focusin(function() {
+	  $(this).find("span").css('display','inline').fadeOut(1000);
+	});
+  //focusout失去焦点时触动动画
+  $("p.cvv").focusout(function() {
+	  $(this).find("span").css('display','inline').fadeOut(1000);
+	});
+  //测试keydown方法
+  $("#demo72").keydown(
+	function(event){
+		alert(event.keyCode);
+	}	  
+  );
+  
+  //测试keyup方法
+  $("#demo73").keyup(
+	function(){
+		$(this).val("nihao");
+	}	  
+  );
+  
+  //测试窗口改变时事件
+  $(window).resize(
+	function(){
+		alert("size已改变");
+	}	  
+  );
+  
+  //测试unload方法
+  $(window).unload(
+	function(){
+		alert("调用unload方法");
+	}	  
+  );
+  
+  //测试slidedown方法
+  $("#demo74").click(
+	function(){
+		$("p.cvv").slideDown("6000",function(){
+			alert("slidedown已结束");
+		});
+	}	  
+  );
+  
+  //测试slideUp方法
+  $("#demo75").click(
+	function(){
+		$("p.cvv").slideUp("slow",function(){
+			alert("slideUp已结束");
+		});
+	}	  
+  );
+  
+  //测试slideToggle方法
+  $("#demo76").click(
+	function(){
+		$("p.cvv").slideToggle("slow");
+	}	  
+  );
+  
+  //测试$.ajax方法
+  $("#demo77").click(
+	function(){
+		$.ajax()
+	}	  
+  );
+  
+  //测试load方法，载入远程HTML文件代码到Dom中
+  $("#demo78").click(
+	function(){
+		$("#ff").load("a.html",function(){
+			alert("load载入成功");
+		});
+		
+	}	  
+  );
+  
+  //测试each方法
+  $("#demo79").click(
+	function(){
+		$.each([1,3,5],function(i,n){
+			alert("序号:"+i+" ,value="+n);
+		});
+	}	  
+  );
+  
+  //测试each的遍历对象
+  $("#demo80").click(
+		  function(){
+			  $.each({name:"tom",age:19},function(i,n){
+			    	 alert("key:"+i+" value="+n);
+			     });
+		  }
+  );
+  
+  //测试serializeArray方法
+  $("#demo81").click(
+	function(){
+		var fields = $("select, :radio").serializeArray();
+		jQuery.each( fields, function(i, field){
+		  $("#results").append(i+": "+field.value + " ");
+		});
+	}	  
+  );
+});
+</script>
+<body>
+<input type="button" id="demo81" value="测试返回值:serializeArray方法"/><br />
+<p id="results"><b>Results:</b> </p>
+<form>
+  <select name="single">
+    <option>Single</option>
+    <option>Single2</option>
+  </select>
+  <select name="multiple" multiple="multiple">
+    <option selected="selected">Multiple</option>
+    <option>Multiple2</option>
+    <option selected="selected">Multiple3</option>
+  </select><br/>
+  <input type="checkbox" name="check" value="check1"/> check1
+  <input type="checkbox" name="check" value="check2" checked="checked"/> check2
+  <input type="radio" name="radio" value="radio1" checked="checked"/> radio1
+  <input type="radio" name="radio" value="radio2"/> radio2
+</form>
+<input type="button" id="demo80" value="测试each方法的遍历对象"/><br />
+<input type="button" id="demo79" value="测试each方法的遍历数组"/><br />
+<input type="button" id="demo78" value="测试load方法"/><br />
+<div id="ff"></div>
+<input type="button" id="demo77" value="测试$.ajax方法"/><br />
+<input type="button" id="demo76" value="测试slideToggle方法"/><br />
+<input type="button" id="demo75" value="测试slideUp方法"/><br />
+<input type="button" id="demo74" value="测试slidedown方法"/><br />
+<input type="text" id="demo73"> </input><br />
+<input type="text" id="demo72"> </input>
+<p class="cvv" style="display: none;"><input type="text" /> <span>focusout fire</span></p>
+<p class="d"><input type="text" /> <span>focusout fire</span></p>
+<input type="button" id="demo71" value="测试trigger方法"/><br />
+<input type="checkbox" value="男">男</input><input type="checkbox" value="女">女</input><br />
+<input type="button" name="" id="demo70" value="测试jQuery的prop方法"></input><br />
+<style>
+  div { margin:3px; width:40px; height:40px;
+        position:absolute; left:0px; top:30px; 
+        background:green; display:none; }
+  div.newcolor { background:blue; }
+  </style>
+  <button id="start">Start</button>
+  <button id="stop">Stop</button>
+  <div></div><br />
+<input type="button" id="demo69" value="测试jQuery([selector,[context]])"/><br />
+<input type="button" id="demo68" value="测试JavaScript的Navigator 对象"/><br />
+<input type="button" id="demo67" value="测试JavaScript定义常量"/><br />
+<input type="button" id="demo66" value="测试函数的调用"/><br />
+<input type="button" id="demo65" value="测试关于局部变量和全局变量的访问"/><br />
+<input type="button" id="demo64" value="测试函数声明"/><br />
+<input type="button" id="demo63" value="测试Text的focus()方法"/><br />
+<input type="button" id="demo62" value="测试Text的select()方法"/><br />
+<input size="25" type="text" id="myText" value="A cat played with a ball"><br/>
+<input type="button" id="demo61" value="测试JavaScript的setTimeOut()"/><br />
+<form action="" onsubmit="return validate_form(this)" method="post">
+Email: <input type="text" name="email" size="30">
+<input type="submit" value="测试javascript表单验证"> 
+</form>
+<input type="text" id="demo60" value="测试jQuery(selector,[context])"/><br />
+<input type="button" id="demo59" value="测试promt"/><br />
+<input type="button" id="demo58" value="测试comfirm()确认框" onclick="return confirm('执行确认吗？');"/><br />
+<input type="button" id="demo57" value="测试document的write()方法"/><br />
+<input type="button" id="demo56" value="测试jQuery的data()"/><br />
+<input type="button" id="demo55" value="测试数组的队列方法unshift()和shift()"/><br />
+<input type="button" id="demo54" value="测试数组的队列方法push()和shift()"/><br />
+<input type="button" id="demo53" value="测试数组的栈方法push()和pop()"/><br />
+<input type="button" id="demo52" value="测试数组转换方法"/><br />
+<input type="button" id="demo51" value="测试手动解除释放内存"/><br />
+<input type="button" id="demo50" value="测试window.CollectGarbage()方法清理内存"/><br />
+<input type="button" id="demo49" value="测试声明变量"/><br />
+<input type="button" id="demo48" value="测试没有块级作用域"/><br />
+<input type="button" id="demo47" value="测试instanceof"/><br />
+<input type="button" id="demo46" value="测试值传递和引用传递"/><br />
+<input type="button" id="demo45" value="测试理解参数"/><br />
+<input type="button" id="demo44" value="测试函数的return"/><br />
+<input type="button" id="demo43" value="测试break和continue语句"/><br />
+<input type="button" id="demo42" value="测试关系操作符"/><br />
+<input type="button" id="demo41" value="测试加法操作符"/><br />
+<input type="button" id="demo40" value="测试逻辑或"/><br />
+<input type="button" id="demo39" value="测试逻辑与"/><br />
+<input type="button" id="demo38" value="测试逻辑非"/><br />
+<input type="button" id="demo37" value="测试toString()"/><br />
+<input type="button" id="demo36" value="测试String类型"/><br />
+<input type="button" id="demo35" value="测试NaN及isNaN()"/><br />
+<input type="button" id="demo34" value="测试number类型，自动转换十进制"/><br />
+<input type="button" id="demo33" value="测试boolean自动转换"/><br />
+<input type="button" id="demo32" value="测试null和undefined"/><br />
+<input type="button" id="demo31" value="测试null"/><br />
+<input type="button" id="demo30" value="测试ECMAScript中typeof方法"/><br />
+<input type="button" id="demo29" value="测试&与&&区别"/><br />
+<input type="button" id="demo28" value="测试document对象"/><br />
+<input type="button" id="demo27" value="测试window对象"/><br />
+<input type="button" id="demo26" value="测试arguments参数传递方式"/><br />
+<input type="button" id="demo25" value="测试完美甘露模型代码实现机制"/><br />
+<input type="button" id="demo24" value="测试new的语法"/><br />
+<input type="button" id="demo23" value="测试丰富的语法甘露"/><br />
+<input type="button" id="demo22" value="测试原型中的一个方法当作构造函数，去初始化新建的对象"/><br />
+<input type="button" id="demo21" value="测试原型模型概念"/><br />
+<input type="button" id="demo20" value="测试闭包方式定义私有变量和共有变量"/><br />
+<input type="button" id="demo19" value="测试医生和病人看病过程"/><br />
+<input type="button" id="demo18" value="测试动态扩展方法被先前建立的对象立即调用"/><br />
+<input type="button" id="demo17" value="测试子类之间关系"/><br />
+<input type="button" id="demo16" value="测试多层prototype原型"/><br />
+<input type="button" id="demo15" value="测试单层prototype原型"/><br />
+<input type="button" id="demo14" value="测试全局sayHello函数"/><br />
+<input type="button" id="demo13" value="测试函数当成构造函数"/><br />
+<input type="button" id="demo12" value="测试new操作符创建对象"/><br />
+<input type="button" id="demo11" value="测试this"/><br />
+<input type="button" id="demo10" value="测试function既是对象又是数组"/><br />
+<input type="button" id="demo09" value="测试object既是对象又是数组"/><br />
+<input type="button" id="demo08" value="测试for循环"/><br />
+<input type="button" id="demo07" value="测试函数也是对象"/><br />
+<input type="button" id="demo06" value="测试eval方法"/><br />
+<input type="button" id="demo05" value="测试json数据类型"/><br />
+<input type="button" id="demo04" value="测试类的概念"/><br />
+<input type="button" id="demo03" value="测试:'123'===123"/><br />
+<input type="button" id="demo02" value="测试:'0123'==0123"/><br />
+<input type="button" id="demo01" value="测试:'123'==123"/><br />
+</html>
